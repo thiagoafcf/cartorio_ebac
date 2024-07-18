@@ -8,6 +8,39 @@
 #define OPCAO_N 'N'
 #define TAMANHO_CPF 11
 
+// Função para remover o caracter de quebra de linha da string e substituir pelo caractere nulo
+void remover_nova_linha (char *str)
+{
+	if(str[TAMANHO_CPF + 1] == '\n'){ 
+			str[TAMANHO_CPF + 1] = '\0';
+	}
+	else
+	{
+		int i;
+		while((i = getchar()) != '\n' && i != EOF);
+	}
+}
+
+//Função para verificar se o CPF informado contém 11 caracteres e é formada apenas por números
+int verifica_cpf(const char *cpf) 
+{
+	int i;
+	
+	if(strlen(cpf) != TAMANHO_CPF) //Verifica se a string tem 11 dígitos
+	{
+        return 0;
+    }
+    for(i = 0 ; i < TAMANHO_CPF; i++) //Verifica se a string contém somente números
+	{
+		if(!isdigit(cpf[i])) 
+		{
+	        return 0;
+	    }
+	}
+    return 1;
+}
+
+//Função para inserir novos registros no banco de dados
 int cadastrar()
 {
 	char nome_arquivo[TAMANHO_CPF+1], cpf[TAMANHO_CPF+1], nome[60], sobrenome[60], cargo [20];
@@ -28,14 +61,7 @@ int cadastrar()
 		}
 	} while (verifica_cpf(cpf) == 0);
 	
-	if(cpf[TAMANHO_CPF + 1] == '\n'){ // if else para remover o caracter de quebra de linha da string e substituir pelo caractere nulo
-			cpf[TAMANHO_CPF + 1] = '\0';
-	}
-	else
-	{
-		int i;
-		while((i = getchar()) != '\n' && i != EOF);
-	}
+	remover_nova_linha(cpf);
 		
 	strcpy(nome_arquivo, cpf);
 	
@@ -84,6 +110,7 @@ int cadastrar()
 	system("pause");
 }
 
+//Função para buscar e visualizar informações armazenadas em banco de dados a partir de uma chave-primária
 int consultar()
 {
 	setlocale(LC_ALL,"Portuguese");
@@ -115,10 +142,10 @@ int consultar()
 		printf("\tCargo:     %s\n", token);
 		printf("\n");
 	}
-	
 	system("pause");
 }
 
+//Função para excluir registros do banco de dados
 int deletar()
 {
 	char cpf[TAMANHO_CPF+1], conteudo[100], virgula[2] = ",", *token, opcao;
@@ -129,24 +156,18 @@ int deletar()
 	printf("Informe o CPF para buscar o cadastro: ");
 	scanf("%s", cpf);
 	
-	if(cpf[TAMANHO_CPF + 1] == '\n'){ // if else para remover o caracter de quebra de linha da string e substituir pelo caractere nulo
-			cpf[TAMANHO_CPF + 1] = '\0';
-	}
-	else
-	{
-		int i;
-		while((i = getchar()) != '\n' && i != EOF);
-	}
+	remover_nova_linha(cpf);
 	
+	//Busca do cadastro no banco de dados
 	FILE *file;
 	file = fopen(cpf,"r");
 	
-	if (file == NULL)
+	if (file == NULL) //Mensagem caso não seja localizado o cadastro
 	{
 		printf("Cadastro não localizado.\n\n");
 		system("pause");
 	}
-	else
+	else //Exibir o cadastro localizado
 	{
 		while(fgets(conteudo, 200, file) != NULL)
 		{
@@ -162,13 +183,12 @@ int deletar()
 			printf("\n\n");
 		}
 		
-		do
+		do //Ações a ser tomadas com o cadastro encontrado
 		{
 			printf("Deseja excluir este cadastro? S/N: ");
 			scanf("%c", &opcao);
 			getchar();
 			
-					
 			opcao = toupper(opcao); //Função para deixar o caractere em caixa alta
 					
 			switch(opcao)
@@ -194,6 +214,7 @@ int deletar()
 	}
 }
 
+//Função para sair do sistema
 int encerrar()
 {
 	char encerrar_programa;
@@ -227,23 +248,6 @@ int encerrar()
 	while(1);
 }
 
-int verifica_cpf(const char *cpf) 
-{
-	int i;
-	
-	if(strlen(cpf) != TAMANHO_CPF) //Verifica se a string tem 11 dígitos
-	{
-        return 0;
-    }
-    for(i = 0 ; i < TAMANHO_CPF; i++) //Verifica se a string contém somente números
-	{
-		if(!isdigit(cpf[i])) 
-		{
-	        return 0;
-	    }
-	}
-    return 1;
-}
 
 /*int verifica_string(const char *string) 
 {
@@ -259,11 +263,12 @@ int verifica_cpf(const char *cpf)
     return 1; // Retorna 1 se todos os caracteres forem válidos
 }*/
 
+//Menu principal
 int main(void)
 {
 	int opcao = 0, fecha = 0;
 			
-	while(fecha == 0)
+	while(fecha == 0) //Laço para permitir o encerramento do programa
 	{
 		setlocale(LC_ALL,"Portuguese");
 		
