@@ -49,15 +49,15 @@ int cadastrar()
 	
 	do
 	{
-		system("cls");
-		printf("--- REGISTRO DE NOVO CADASTRO ---\n\n\n");
 		printf("CPF (Sem pontos e traços): ");
 		scanf("%s", cpf);
-								
+							
 		if(verifica_cpf(cpf) == 0) // Verifica se o CPF contém exatamente 11 dígitos e se é composto apenas por números
 		{
 			printf("CPF inválido.\n\n");
-			system("pause");	
+			system("pause");
+			system("cls");
+			printf("--- REGISTRO DE NOVO CADASTRO ---\n\n\n");	
 		}
 	} while (verifica_cpf(cpf) == 0);
 	
@@ -115,9 +115,8 @@ int consultar()
 {
 	setlocale(LC_ALL,"Portuguese");
 	
-	char cpf[TAMANHO_CPF+1], conteudo[100], virgula[2] = ",", *token;
+	char cpf[TAMANHO_CPF+1], conteudo[100], *token;
 	
-	printf("--- CONSULTA DE CADASTRO ---\n\n\n");
 	printf("Informe o CPF para buscar o cadastro: ");
 	scanf("%s", cpf);
 	
@@ -127,18 +126,19 @@ int consultar()
 	if (file == NULL)
 	{
 		printf("Cadastro não localizado.\n\n");
+		system("pause");
 	}
 	
 	while(fgets(conteudo, 200, file) != NULL)
 	{
 		printf("\nCadastro localizado:\n\n");
-		token = strtok(conteudo, virgula);
+		token = strtok(conteudo, ",");
 		printf("\tCPF:       %s\n", token);
-		token = strtok(NULL, virgula);
+		token = strtok(NULL, ",");
 		printf("\tNome:      %s\n", token);
-		token = strtok(NULL, virgula);
+		token = strtok(NULL, ",");
 		printf("\tSobrenome: %s\n", token);
-		token = strtok(NULL, virgula);
+		token = strtok(NULL, ",");
 		printf("\tCargo:     %s\n", token);
 		printf("\n");
 	}
@@ -148,11 +148,11 @@ int consultar()
 //Função para excluir registros do banco de dados
 int deletar()
 {
-	char cpf[TAMANHO_CPF+1], conteudo[100], virgula[2] = ",", *token, opcao;
+	char cpf[TAMANHO_CPF + 1], conteudo[100], virgula[2] = ",", *token, opcao;
 	int erro = 1;
 	
 	setlocale(LC_ALL,"Portuguese");
-	printf("--- EXCLUIR CADASTRO ---\n\n\n");
+	
 	printf("Informe o CPF para buscar o cadastro: ");
 	scanf("%s", cpf);
 	
@@ -248,67 +248,82 @@ int encerrar()
 	while(1);
 }
 
-
-/*int verifica_string(const char *string) 
-{
-    int i;
-    
-	for (i = 0; i < strlen(string); i++) 
-	{
-        if (!isalpha(string[i]) && string[i] != ' ') 
-		{
-            return 0; // Retorna 0 se encontrar um caractere que não seja letra nem espaço
-        }
-    }
-    return 1; // Retorna 1 se todos os caracteres forem válidos
-}*/
-
 //Menu principal
 int main(void)
 {
-	int opcao = 0, fecha = 0;
-			
-	while(fecha == 0) //Laço para permitir o encerramento do programa
+	int opcao = 0, fecha = 0, laco = 0, check_senha;
+	char senha[] = "a";
+	
+	//Tela de login de admin
+	while(laco == 0)
 	{
 		setlocale(LC_ALL,"Portuguese");
-		
+			
 		system("cls");
-		
+					
 		printf("### CARTÓRIO EBAC ###\n\n");
-		printf("Olá! Digite o número de uma opção para prosseguir:\n\n");
-		printf("\t1 - Registrar novo cadastro\n");
-		printf("\t2 - Consultar cadastro\n");
-		printf("\t3 - Excluir cadastro\n");
-		printf("\t4 - Encerrar programa\n\n");
+		printf("Por favor, digite sua senha de administrador: \n");
+		scanf("%s", senha);
 		
-		printf("Opção: ");
-		scanf("%d", &opcao);
-		getchar();
+		check_senha = strcmp(senha, "admin"); //Comprativo da senha inserida com a armazenada no sistema
 		
-		system("cls");
-		
-		switch(opcao)
+		//Verificação de aprovação do login
+		if(check_senha == 0)
 		{
-			case 1:
-				cadastrar();
-			break;
-			
-			case 2:
-				consultar();
-			break;
-			
-			case 3:
-				deletar();
-			break;
-			
-			case 4:
-				fecha = encerrar();	
-			break;
-			
-			default:
-				printf("Opção inválida\n");
-				system("pause");
-			break;
+			//Login aprovado
+			while(fecha == 0) //Laço para permitir o encerramento do programa
+			{
+				setlocale(LC_ALL,"Portuguese");
+				
+				system("cls");
+				laco = 1;
+				
+				printf("### CARTÓRIO EBAC ###\n\n");
+				printf("Olá! Digite o número de uma opção para prosseguir:\n\n");
+				printf("\t1 - Registrar novo cadastro\n");
+				printf("\t2 - Consultar cadastro\n");
+				printf("\t3 - Excluir cadastro\n");
+				printf("\t4 - Encerrar programa\n\n");
+				
+				printf("Opção: ");
+				scanf("%d", &opcao);
+				getchar();
+				
+				system("cls");
+				
+				switch(opcao)
+				{
+					case 1:
+						printf("--- REGISTRO DE NOVO CADASTRO ---\n\n\n");
+						cadastrar();
+					break;
+					
+					case 2:
+						printf("--- CONSULTA DE CADASTRO ---\n\n\n");
+						consultar();
+					break;
+					
+					case 3:
+						printf("--- EXCLUIR CADASTRO ---\n\n\n");
+						deletar();
+					break;
+					
+					case 4:
+						fecha = encerrar();	
+					break;
+					
+					default:
+						printf("Opção inválida\n");
+						system("pause");
+					break;
+				}
+			}
+		}
+		//Login recusado
+		else
+		{
+			printf("\nSenha incorreta!\n");
+			system("pause");
 		}
 	}
 	return 0;
