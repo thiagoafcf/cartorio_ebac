@@ -1,0 +1,98 @@
+############################################
+### Cartório EBAC - Validação do projeto ###
+############################################
+Versão de 24/07/2024
+
+-----------------
+1 - TELA DE LOGIN
+-----------------
+	1) Apresentação esperada da tela: OK
+	2) Aprovação de login com senha correta: OK
+	3) Reprovação de login com a senha com o texto correto, porém digitado em com CAPS LOCK: OK
+	4) Reprovação de login com demais senhas: OK
+	5) Acesso ao menu principal: OK
+	6) Código: OK
+
+------------------
+2 - MENU PRINCIPAL
+------------------
+	1) Apresentação esperada da tela: OK
+	2) Acesso à opção 1 (Cadastrar): OK
+	3) Acesso à opção 2 (Consultar): OK
+	4) Acesso à opção 3 (Deletar): OK
+	5) Acesso à opção 4 (Encerrar): OK
+	6) Código: OK
+
+--------------------
+3 - FUNÇÃO CADASTRAR
+--------------------
+	1) Apresentação esperada da tela: OK
+	2) Inserção de dados do CPF: OK
+	3) PROCEDIMENTO REMOVER_NOVA_LINHA: OK
+	4) FUNÇÃO VERIFICA_CPF()
+		1. Aprovação de CPF inserido com 11 caracteres e somente números: OK
+		2. Reprovação de CPF inserido com menos de 11 caracteres: OK
+		3. Reprovação de CPF inserido com mais de 11 caracteres: OK
+		4. Reprovação de CPF inserido com 11 caracteres e somente letras: OK 
+		5. Reprovação de CPF inserido com 11 caracteres com letras e números: OK 
+		6. Reprovação de CPF inserido com 11 caracteres e somente caracteres especiais: OK
+		7. Reprovação de CPF inserido com 11 caracteres com números e caracteres especiais: OK 
+		8. Reprovação de CPF inserido com 11 caracteres com letras e caracteres especiais: OK 
+		9. Reprovação de CPF inserido com 11 caracteres com números, letras e caracteres especiais: OK 
+	5) Inserção de dados de Nome: OK
+	6) Inserção de dados de Sobrenome: OK
+	7) Inserção de dados de Cargo: OK
+	8) Criação de arquivo .txt para armazenamento dos dados coletados com título igual ao dado de CPF inserido pelo usuário: OK
+	9) Registro dos dados inseridos separados por ',' no arquivo criado: OK
+	10) Registro dos dados sem erros mesmo quando os dados de Nome, Sobrenome ou Cargo são inseridos com espaço: OK
+	11) Registro dos dados sem erros quando inserido com um ou mais caracteres ',' no começo: OK
+	12) Registro dos dados sem erros quando inserido com um ou mais caracteres ',' no final: OK
+	13) Registro dos dados sem erros quando inserido com um ou mais caracteres ',' sem ser no começo ou no final: *****ERRO DE REGISTRO. OS CARACTERES INSERIDOS APÓS A VÍRGULA SERÃO LIDOS COMO OUTRO DADO NA FUNÇÃO DE CONSULTA*****
+	14) Mensagem de confirmação de registro realizado com sucesso: OK
+	15) Retorno ao menu principal: OK
+	16) Código: *****REQUER CORREÇÃO DO ERRO DESCRITO NO ITEM 3.13*****
+
+--------------------
+4 - FUNÇÃO CONSULTAR
+--------------------
+	1) Apresentação esperada da tela: OK
+	2) Inserção de dados do CPF: OK
+	3) Busca pelo arquivo com nome igual ao do CPF inserido pelo usuário: OK
+	4) Mensagem de arquivo não encontrado caso o registro não seja encontrado: *****OK, PORÉM SOLICITA AO USUÁRIO PARA PRESSIONAR O ENTER DUAS VEZES PARA RETORNAR AO MENU PRINCIPAL*****
+	5) Apresentação dos dados caso o registro seja encontrado: *****OK, PORÉM INADEQUADA QUANDO O REGISTRO APRESENTA O ERRO DESCRITO NA SEÇÃO 3.13****
+	6) Retorno ao menu principal após apresentação dos dados: OK
+	7) Código: *****OK, PORÉM REQUER APRIMORAMENTO DO RETORNO PARA O MENU PRINCIPAL APÓS O ARQUIVO NÃO SER ENCONTRADO. SUGERE-SE QUE O system("pause") DA LINHA 129 SEJA EXCLUÍDO*****
+
+------------------
+5 - FUNÇÃO DELETAR
+------------------
+	1) Apresentação esperada da tela: OK
+	2) Inserção de dados do CPF: OK
+	3) PROCEDIMENTO REMOVER_NOVA_LINHA: OK
+	4) Busca pelo arquivo com nome igual ao do CPF inserido pelo usuário: OK 
+	5) Mensagem de arquivo não encontrado caso o registro não seja encontrado: OK
+	6) Apresentação do registro corretamente caso arquivo seja encontrado: OK
+	7) Solicitação de confirmação da exclusão do registro: OK
+	8) Registro excluído com sucesso em caso de confirmação pelo usuário: 
+		1. *****A EXCLUSÃO NÃO É REALIZADA QUANDO HÁ O ERRO DESCRITO NA SEÇÃO 3.13****
+		2. *****A EXCLUSÃO NÃO É REALIZADA CONSISTENTEMENTE QUANDO HÁ O ERRO DESCRITO NA SEÇÃO 5.11 E PODE IMPEDIR A EXCLUSÃO DE DEMAIS REGISTROS APÓS A REENTRADA NA FUNÇÃO****
+	9) Retorno ao menu principal após exclusão do registro: OK
+	10) Retorno ao menu principal caso o usuário não confirme a exclusão: OK
+	11) Mensagem de erro caso o usuário insira qualquer outro caractere que não 's' ou 'S' ou 'N' ou 'N': *****CASO O USUÁRIO DIGITE MAIS DE UM CARACTERE, O PROGRAMA APRESENTA DUAS VEZES A MENSAGEM DE OPÇÃO INVÁLIDA*****
+	12) Código: 
+		1. *****REQUER RESOLUÇÃO DO ERRO DESCRITO NO ITEM 5.11*****
+		2. *****SUGERE-SE A OTIMIZAÇÃO DO CÓDIGO PARA QUE A FUNÇÃO CONSULTAR() SEJA CHAMADA NESTA FUNÇÃO*****
+
+-------------------
+6 - FUNÇÃO ENCERRAR
+-------------------
+	1) Apresentação esperada da tela: OK
+	2) Solicitação de confirmação para encerrar o programa: OK
+	3) Inicío do encerramento quando digitado o caractere 's' ou 'S' na primeira tentativa: OK
+	4) Inicío do encerramento quando digitado o caractere 's' ou 'S' a partir da segunda tentativa: *****OK, CASO O ERRO DESCRITO NO ITEM 6.7.2 NÃO OCORRA*****
+	5) Retorno ao menu principal quando digitado o caractere 'n' ou 'N' na primeira tentativa: OK
+	6) Retorno ao menu principal quando digitado o caractere 'n' ou 'N' a partir da segunda tentativa: *****OK, CASO O ERRO DESCRITO NO ITEM 6.7.2 NÃO OCORRA*****
+	7) Mensagem de opção inválida caso usuário não informe 's' ou 'S' ou 'n' ou 'N':
+		1. Se digitado apenas um caractere: OK
+		2. Se digitado mais de um caractere: *****PODE OCORRER A REPETIÇÃO DA APRESENTAÇÃO DA MENSAGEM DE OPÇÃO INVÁLIDA E IMPEDIR A SAÍDA DO SISTEMA MESMO APÓS DIGITAR UMA OPÇÃO VÁLIDA*****
+	8) Código: *****OK, PORÉM REQUER A CORREÇÃO DO ERRO DESCRITO NO ITEM 6.7.2*****
